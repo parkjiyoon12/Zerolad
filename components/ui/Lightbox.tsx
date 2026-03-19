@@ -94,7 +94,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ selectedImage, items, onClos
             />
             <div className="text-center">
                 <h3 className="text-white text-2xl font-bold mb-2">{selectedImage.title}</h3>
-                <p className="text-[#2563EB] font-bold">{selectedImage.category}</p>
+                <p className="text-[var(--primary-color)] font-bold">{selectedImage.category}</p>
                 {selectedImage.desc && <p className="text-gray-400 mt-2 text-sm max-w-lg mx-auto">{selectedImage.desc}</p>}
             </div>
           </motion.div>

@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { SiteProvider } from './components/SiteContext';
+import { AuthProvider } from './components/AuthContext';
 import App from './App';
 
 const rootElement = document.getElementById('root');
@@ -10,6 +13,12 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <SiteProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SiteProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

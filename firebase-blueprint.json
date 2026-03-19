@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "SiteData": {
+      "title": "Site Data",
+      "description": "The configuration and content for the website.",
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "object",
+          "properties": {
+            "primaryColor": { "type": "string" },
+            "fontFamily": { "type": "string" },
+            "backgroundColor": { "type": "string" },
+            "textColor": { "type": "string" }
+          },
+          "required": ["primaryColor", "fontFamily", "backgroundColor", "textColor"]
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "heroHeadline": { "type": "string" },
+            "heroSubheadline": { "type": "string" },
+            "heroCtaText": { "type": "string" },
+            "aboutText": { "type": "string" },
+            "socialLinks": {
+              "type": "object",
+              "properties": {
+                "instagram": { "type": "string" },
+                "facebook": { "type": "string" },
+                "blog": { "type": "string" }
+              },
+              "required": ["instagram", "facebook", "blog"]
+            }
+          },
+          "required": ["heroHeadline", "heroSubheadline", "heroCtaText", "aboutText", "socialLinks"]
+        },
+        "portfolio": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "imageUrl": { "type": "string" },
+              "category": { "type": "string" }
+            },
+            "required": ["title", "imageUrl", "category"]
+          }
+        }
+      },
+      "required": ["theme", "content", "portfolio"]
+    }
+  },
+  "firestore": {
+    "/site/config": {
+      "schema": "SiteData",
+      "description": "The global site configuration."
+    }
+  }
+}

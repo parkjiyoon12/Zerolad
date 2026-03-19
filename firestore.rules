@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: site
+    // Document ID: config
+    // Fields:
+    //   - theme: map (required)
+    //   - content: map (required)
+    //   - portfolio: list (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == "parkjiyoon12@gmail.com" && request.auth.token.email_verified == true;
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function isValidSiteData() {
+      return hasRequiredFields(['theme', 'content', 'portfolio']) &&
+             request.resource.data.theme is map &&
+             request.resource.data.content is map &&
+             request.resource.data.portfolio is list;
+    }
+
+    match /site/config {
+      // Anyone can read the site configuration
+      allow read: if true;
+      
+      // Only the admin can create or update the configuration
+      allow create: if isAdmin() && isValidSiteData();
+      allow update: if isAdmin() && isValidSiteData();
+      allow delete: if false; // Prevent deletion of the config
+    }
+  }
+}

@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ZoomIn } from 'lucide-react';
 import { PortfolioItemData, PortfolioPageProps } from '../types';
 import { Lightbox } from './ui/Lightbox';
+import { useSiteData } from './SiteContext';
 
 export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) => {
+  const { data } = useSiteData();
   const [filter, setFilter] = useState('All');
   const [selectedImage, setSelectedImage] = useState<PortfolioItemData | null>(null);
 
@@ -16,16 +18,16 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
     : items.filter(item => item.category === filter);
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans relative z-50">
+    <div className="min-h-screen relative z-50 bg-[var(--bg-color)] text-[var(--text-color)]">
       
       {/* Fixed Header for Portfolio Page */}
-      <div className="sticky top-0 bg-white/90 backdrop-blur-md z-40 border-b border-gray-100 px-6 md:px-10 py-6 flex items-center justify-between">
+      <div className="sticky top-0 z-40 border-b border-[var(--text-color)]/10 px-6 md:px-10 py-6 flex items-center justify-between bg-[var(--bg-color)]/90 backdrop-blur-md">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors group"
+            className="p-2 rounded-full hover:bg-[var(--text-color)]/10 transition-colors group"
           >
-            <ArrowLeft className="text-black group-hover:text-[#2563EB] transition-colors" />
+            <ArrowLeft className="transition-colors text-[var(--text-color)]" />
           </button>
           <h2 className="text-xl font-bold tracking-tight">All Projects</h2>
         </div>
@@ -42,8 +44,8 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
               onClick={() => setFilter(cat)}
               className={`px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${
                 filter === cat 
-                  ? 'bg-black text-white border-black' 
-                  : 'bg-white text-gray-500 border-gray-200 hover:border-black hover:text-black'
+                  ? 'bg-[var(--primary-color)] text-white border-[var(--primary-color)]' 
+                  : 'bg-transparent text-[var(--text-color)]/70 border-[var(--text-color)]/20 hover:border-[var(--text-color)] hover:text-[var(--text-color)]'
               }`}
             >
               {cat}
@@ -68,7 +70,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
                 className="group cursor-pointer"
                 onClick={() => setSelectedImage(item)}
               >
-                <div className="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden relative mb-4 border border-gray-100">
+                <div className="aspect-[4/3] bg-[var(--text-color)]/5 rounded-2xl overflow-hidden relative mb-4 border border-[var(--text-color)]/5">
                   <img 
                     src={item.imageUrl} 
                     alt={item.title} 
@@ -84,10 +86,10 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
                 </div>
                 
                 <div className="px-1">
-                    <span className="text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-1 block">
+                    <span className="text-xs font-bold uppercase tracking-wider mb-1 block text-[var(--primary-color)]">
                         {item.category}
                     </span>
-                    <h3 className="text-lg font-bold group-hover:underline decoration-[#2563EB] underline-offset-4 decoration-2">
+                    <h3 className="text-lg font-bold group-hover:underline underline-offset-4 decoration-2 decoration-[var(--primary-color)]">
                         {item.title}
                     </h3>
                 </div>
@@ -97,7 +99,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
         </motion.div>
 
         {filteredItems.length === 0 && (
-          <div className="py-20 text-center text-gray-400">
+          <div className="py-20 text-center text-[var(--text-color)]/50">
             해당 카테고리에 등록된 프로젝트가 없습니다.
           </div>
         )}

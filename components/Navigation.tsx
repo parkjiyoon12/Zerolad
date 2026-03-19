@@ -55,7 +55,7 @@ const Navigation: React.FC = () => {
               <MobileLink href="#services" setIsMenuOpen={setIsMenuOpen} onClick={(e) => handleScroll(e, 'services')}>서비스 분야</MobileLink>
               <MobileLink href="#works" setIsMenuOpen={setIsMenuOpen} onClick={(e) => handleScroll(e, 'works')}>작업사례</MobileLink>
               <MobileLink href="#about" setIsMenuOpen={setIsMenuOpen} onClick={(e) => handleScroll(e, 'about')}>제롤 알아보기</MobileLink>
-              <a href="tel:010-8143-0654" className="text-blue-600 mt-4 text-xl">010-8143-0654</a>
+              <a href="tel:010-8143-0654" className="text-[var(--primary-color)] mt-4 text-xl">010-8143-0654</a>
             </motion.div>
           )}
         </AnimatePresence>

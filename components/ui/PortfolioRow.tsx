@@ -65,7 +65,7 @@ export const PortfolioRow: React.FC<PortfolioRowProps> = ({ category, items, onI
       {/* Header aligned with max-w-7xl */}
       <div className="px-6 md:px-10 mb-8 flex items-end justify-between max-w-7xl mx-auto">
         <h3 className="text-lg md:text-xl font-bold flex items-center gap-2 tracking-tight">
-            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-[#2563EB] rounded-full"></span>
+            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-[var(--primary-color)] rounded-full"></span>
             {category}
         </h3>
         
@@ -118,7 +118,7 @@ export const PortfolioRow: React.FC<PortfolioRowProps> = ({ category, items, onI
                   </div>
                </div>
             </div>
-            <h4 className="text-xl font-bold group-hover:text-[#2563EB] transition-colors px-1 leading-tight">{item.title}</h4>
+            <h4 className="text-xl font-bold group-hover:text-[var(--primary-color)] transition-colors px-1 leading-tight">{item.title}</h4>
             {item.desc && <p className="text-gray-500 text-sm mt-2 px-1">{item.desc}</p>}
           </motion.div>
         ))}

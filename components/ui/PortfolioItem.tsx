@@ -22,7 +22,7 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ category, title, c
         )}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
     </div>
-    <p className="text-2xl font-bold text-[#2563EB] uppercase tracking-widest mb-2">{category}</p>
-    <h3 className="text-xl font-bold group-hover:underline decoration-2 decoration-[#2563EB] underline-offset-4">{title}</h3>
+    <p className="text-2xl font-bold text-[var(--primary-color)] uppercase tracking-widest mb-2">{category}</p>
+    <h3 className="text-xl font-bold group-hover:underline decoration-2 decoration-[var(--primary-color)] underline-offset-4">{title}</h3>
   </motion.div>
 );
