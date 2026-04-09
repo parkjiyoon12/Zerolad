@@ -37,7 +37,7 @@ const defaultData: SiteData = {
     textColor: '#000000',
   },
   content: {
-    heroHeadline: '비즈니스의 첫인상,\n제롤이 디자인합니다.',
+    heroHeadline: '비즈니스의 첫인상,\n제롤광고산업이 디자인합니다.',
     heroSubheadline: '당신의 비즈니스를 돋보이게 하는 최고의 디자인 파트너',
     heroCtaText: '작업사례',
     aboutText: '제롤은 고객의 비즈니스 성공을 위해 최선을 다합니다.',

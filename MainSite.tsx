@@ -207,7 +207,7 @@ export const MainSite: React.FC = () => {
                 <div className="w-3 h-3" style={{ backgroundColor: data.theme.primaryColor }}></div>
                 <span className="text-lg uppercase tracking-widest font-bold text-gray-500">작업사례</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">제롤이 만든 결과물.</h2>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">제롤광고산업이 만든 결과물.</h2>
             </div>
             <button 
               onClick={() => setCurrentView('portfolio')}
@@ -295,7 +295,7 @@ export const MainSite: React.FC = () => {
                     견적문의 및 상담
                 </h2>
                 <p className="text-gray-400 text-lg mb-12 leading-relaxed">
-                    제롤은 고객에게 맞춘 최적의 디자인 솔루션을 제공합니다.<br/>
+                    제롤광고산업은 고객에게 맞춘 최적의 디자인 솔루션을 제공합니다.<br/>
                     가벼운 문의라도 언제든 환영합니다.
                 </p>
                 
