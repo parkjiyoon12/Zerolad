@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { NavLink, MobileLink } from './ui/NavLink';
 
 const Navigation: React.FC = () => {
@@ -29,6 +29,12 @@ const Navigation: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3 text-lg font-bold text-[var(--primary-color)]">
+            <Phone size={18} />
+            <a href="tel:010-8143-0654" className="hover:opacity-80 transition-opacity">010-8143-0654</a>
+            <span className="text-gray-300 text-sm">|</span>
+            <a href="tel:064-753-0654" className="hover:opacity-80 transition-opacity">064-753-0654</a>
+          </div>
           <a 
             href="#contact" 
             onClick={(e) => handleScroll(e, 'contact')}

@@ -322,13 +322,14 @@ export const MainSite: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-start gap-5 group cursor-pointer" onClick={() => window.location.href = 'tel:010-8143-0654'}>
+                    <div className="flex items-start gap-5 group">
                         <div className="w-12 h-12 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[var(--primary-color)] group-hover:border-[var(--primary-color)] transition-colors">
                             <Phone size={24} />
                         </div>
                         <div>
                             <p className="text-gray-500 text-sm mb-1 font-medium">Phone</p>
-                            <p className="text-xl font-bold group-hover:text-[var(--primary-color)] transition-colors">010-8143-0654</p>
+                            <a href="tel:010-8143-0654" className="block text-xl font-bold hover:text-[var(--primary-color)] transition-colors mb-1">010-8143-0654</a>
+                            <a href="tel:064-753-0654" className="block text-xl font-bold hover:text-[var(--primary-color)] transition-colors">064-753-0654</a>
                         </div>
                     </div>
 
