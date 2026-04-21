@@ -29,6 +29,7 @@ export const MainSite: React.FC = () => {
   const [lightboxSelectedImage, setLightboxSelectedImage] = useState<PortfolioItemData | null>(null);
   const [lightboxItems, setLightboxItems] = useState<PortfolioItemData[]>([]);
   const [isQrOpen, setIsQrOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>('전체');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,6 +56,13 @@ export const MainSite: React.FC = () => {
   const signageItems = data.portfolio.filter(item => item.category === '옥외광고');
   const bannerItems = data.portfolio.filter(item => item.category === '현수막');
   const printItems = data.portfolio.filter(item => item.category === '인쇄물');
+  
+  const homeFilteredPortfolio = activeCategory === '전체' 
+    ? data.portfolio 
+    : data.portfolio.filter(item => item.category === activeCategory);
+  
+  // Show max 6 items on the homepage
+  const homeDisplayPortfolio = homeFilteredPortfolio.slice(0, 6);
 
   const handlePortfolioRowClick = (item: PortfolioItemData, categoryItems: PortfolioItemData[]) => {
     setLightboxItems(categoryItems);
@@ -67,7 +75,7 @@ export const MainSite: React.FC = () => {
 
   return (
     <div className="bg-[var(--bg-color)] text-[var(--text-color)] font-sans selection:bg-[var(--primary-color)] selection:text-white relative">
-      <Navigation />
+      <Navigation onPortfolioClick={() => { window.scrollTo(0, 0); setCurrentView('portfolio'); }} />
 
       {/* Admin Button */}
       <button 
@@ -79,13 +87,17 @@ export const MainSite: React.FC = () => {
       </button>
 
       {/* Hero Section */}
-      <section className="relative px-6 md:px-10 py-32 border-b border-gray-100 overflow-hidden min-h-[50vh] flex flex-col justify-center items-center text-center">
-        <div className="max-w-4xl mx-auto w-full flex flex-col items-center relative z-10">
-            <div className="flex items-center justify-center gap-4 mb-10">
+      <section className="bg-white relative px-6 md:px-10 pt-10 pb-16 md:pt-14 md:pb-24 border-b border-gray-100 overflow-hidden flex flex-col justify-center">
+        {/* Subtle grid background for modern technical feel */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        
+        <div className="max-w-6xl mx-auto w-full flex flex-col relative z-10">
+            {/* Logo positioned above the label and headline */}
+            <div className="flex items-center gap-4 mb-8">
               <motion.img 
                 src="https://i.imgur.com/s39s4ud.png" 
                 alt="Z Symbol" 
-                className="h-20 md:h-24 w-auto object-contain"
+                className="h-10 md:h-14 w-auto object-contain"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -93,48 +105,55 @@ export const MainSite: React.FC = () => {
               <motion.img 
                 src="https://i.imgur.com/cQfmPTO.png" 
                 alt="ZEROL Text" 
-                className="h-12 md:h-16 w-auto object-contain"
+                className="h-8 md:h-10 w-auto object-contain"
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               />
             </div>
 
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="flex items-center gap-2 mb-4"
+            >
+              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: data.theme.primaryColor }}></div>
+              <span className="text-sm md:text-base font-bold text-[var(--primary-color)] tracking-tight">제주 기반 광고 전문</span>
+            </motion.div>
+
             <motion.h1 
               {...fIn} 
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-4xl md:text-6xl font-medium leading-tight tracking-tight mb-6 text-[var(--text-color)] whitespace-pre-line"
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-5xl md:text-[5.5rem] leading-[1.08] tracking-tight mb-8 text-[var(--text-color)] font-blackhan break-keep"
             >
-              {data.content.heroHeadline.split(/\\n|\n/).map((line, i, arr) => (
-                <React.Fragment key={i}>
-                  {line}
-                  {i !== arr.length - 1 && <br />}
-                </React.Fragment>
-              ))}
+              비즈니스의 첫인상,<br />
+              <span style={{ color: data.theme.primaryColor }}>제롤광고산업</span>이<br />
+              디자인합니다.
             </motion.h1>
             
             <motion.p
               {...fIn}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl text-gray-600 mb-12 max-w-2xl"
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-lg md:text-xl text-gray-500 mb-12 max-w-2xl font-medium tracking-tight"
             >
-              {data.content.heroSubheadline}
+              차량랩핑부터 옥외광고, 고급 인쇄물까지 <br />— 브랜드의 가치를 정밀하게 구현합니다.
             </motion.p>
 
             <motion.div 
               {...fIn}
-              transition={{ delay: 0.5 }}
-              className="flex flex-wrap justify-center gap-4"
+              transition={{ delay: 0.6 }}
+              className="flex flex-wrap gap-4"
             >
               <button 
-                className="bg-black text-white text-lg px-10 py-4 rounded-full font-bold hover:bg-zinc-800 transition-colors shadow-lg"
+                className="bg-black text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-zinc-800 transition-colors shadow-lg"
                 onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 제롤 알아보기
               </button>
               <button 
                 onClick={() => setCurrentView('portfolio')}
-                className="group bg-white text-black border border-gray-200 text-lg px-10 py-4 rounded-full font-bold hover:bg-gray-50 hover:border-black transition-all shadow-sm flex items-center gap-2"
+                className="group bg-white text-black border border-gray-200 text-lg px-8 py-4 rounded-lg font-bold hover:bg-gray-50 hover:border-black transition-all shadow-sm flex items-center gap-2"
               >
                 {data.content.heroCtaText} <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
               </button>
@@ -142,19 +161,84 @@ export const MainSite: React.FC = () => {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="flex-1 py-6 md:py-8 px-6 md:px-10 border-b md:border-b-0 md:border-r border-gray-100"
+          >
+            <div className="text-3xl md:text-4xl font-blackhan mb-1 tracking-tight">
+              500<span style={{ color: data.theme.primaryColor }}>+</span>
+            </div>
+            <div className="text-xs md:text-sm font-bold text-gray-500">
+              프로젝트 완료
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="flex-1 py-6 md:py-8 px-6 md:px-10 border-b md:border-b-0 md:border-r border-gray-100"
+          >
+            <div className="text-3xl md:text-4xl font-blackhan mb-1 tracking-tight">
+              10<span style={{ color: data.theme.primaryColor }}>+</span>
+            </div>
+            <div className="text-xs md:text-sm font-bold text-gray-500">
+              년 경력
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="flex-1 py-6 md:py-8 px-6 md:px-10 border-b md:border-b-0 md:border-r border-gray-100"
+          >
+            <div className="text-3xl md:text-4xl font-blackhan mb-1 tracking-tight whitespace-nowrap">
+              제주 <span style={{ color: data.theme.primaryColor }}>전역</span>
+            </div>
+            <div className="text-xs md:text-sm font-bold text-gray-500">
+              시공 가능
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="flex-1 py-6 md:py-8 px-6 md:px-10 border-b md:border-b-0"
+          >
+            <div className="text-3xl md:text-4xl font-blackhan mb-1 tracking-tight">
+              <span style={{ color: data.theme.primaryColor }}>당일</span>
+            </div>
+            <div className="text-xs md:text-sm font-bold text-gray-500">
+              현수막 출고
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Marquee Section */}
-      <div className="bg-[var(--primary-color)] text-white py-4 overflow-hidden whitespace-nowrap border-y border-[var(--primary-color)]">
+      <div className="bg-[#111] text-white py-4 overflow-hidden whitespace-nowrap border-y border-black">
         <motion.div 
           animate={{ x: [0, -2000] }}
           transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-          className="flex gap-10 text-lg font-bold uppercase tracking-widest items-center"
+          className="flex gap-10 text-lg font-bold uppercase tracking-[0.2em] items-center"
         >
           {[...Array(8)].map((_, i) => (
             <React.Fragment key={i}>
               {marqueeItems.map((item, idx) => (
                 <React.Fragment key={`${i}-${idx}`}>
-                  <span>{item}</span>
-                  <span className="w-2 h-2 bg-white rounded-full flex-shrink-0"></span>
+                  <span className="text-white/90">{item}</span>
+                  <span className="text-[var(--primary-color)] font-black">/</span>
                 </React.Fragment>
               ))}
             </React.Fragment>
@@ -163,9 +247,9 @@ export const MainSite: React.FC = () => {
       </div>
 
       {/* Services Section */}
-      <section id="services" className="bg-black text-white py-24 px-6 md:px-10 scroll-mt-24">
+      <section id="services" className="bg-[#111] text-white py-16 md:py-24 px-6 md:px-10 scroll-mt-24">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-12 md:mb-16 flex items-center gap-3">
             <div className="w-3 h-3" style={{ backgroundColor: data.theme.primaryColor }}></div>
             <span className="text-lg uppercase tracking-widest font-bold text-gray-400">서비스 분야</span>
           </div>
@@ -199,8 +283,8 @@ export const MainSite: React.FC = () => {
       </section>
 
       {/* Works Section */}
-      <section id="works" className="py-24 bg-gray-50 overflow-hidden scroll-mt-24">
-        <div className="px-6 md:px-10 mb-10">
+      <section id="works" className="py-16 md:py-24 bg-gray-50 overflow-hidden scroll-mt-24">
+        <div className="px-6 md:px-10 mb-8 md:mb-10">
           <div className="max-w-7xl mx-auto flex justify-between items-end">
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -218,27 +302,74 @@ export const MainSite: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-4">
-          {vehicleItems.length > 0 && <PortfolioRow category="차량랩핑" items={vehicleItems} onImageClick={(item) => handlePortfolioRowClick(item, vehicleItems)} />}
-          {signageItems.length > 0 && <PortfolioRow category="옥외광고" items={signageItems} onImageClick={(item) => handlePortfolioRowClick(item, signageItems)} />}
-          {bannerItems.length > 0 && <PortfolioRow category="현수막" items={bannerItems} onImageClick={(item) => handlePortfolioRowClick(item, bannerItems)} />}
-          {printItems.length > 0 && <PortfolioRow category="인쇄물" items={printItems} onImageClick={(item) => handlePortfolioRowClick(item, printItems)} />}
+        <div className="px-6 md:px-10 max-w-7xl mx-auto flex gap-2 md:gap-3 overflow-x-auto pb-6 mb-2 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+           {['전체', '차량랩핑', '옥외광고', '현수막', '인쇄물'].map(cat => (
+             <button 
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-3 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-black text-white shadow-[0_4px_10px_rgba(0,0,0,0.1)]' : 'bg-white border border-gray-200 text-gray-500 hover:text-black hover:border-black'}`}
+             >
+               {cat}
+             </button>
+           ))}
         </div>
-        
-         <div className="px-6 md:hidden mt-8">
-            <button 
-              onClick={() => setCurrentView('portfolio')}
-              className="w-full py-4 border border-black rounded-full font-bold flex items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors"
-            >
-              View All Projects <ArrowUpRight size={16}/>
-            </button>
-         </div>
+
+        <div className="min-h-[400px] max-w-7xl mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence mode="popLayout">
+              {homeDisplayPortfolio.map((item, idx) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  key={`${item.title}-${idx}`}
+                  className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm bg-gray-100 aspect-[16/10]"
+                  onClick={() => handlePortfolioRowClick(item, homeFilteredPortfolio)}
+                >
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  
+                  {/* Text Overlay */}
+                  <div className="absolute bottom-0 left-0 p-5 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 pointer-events-none">
+                      <span className="text-[var(--primary-color)] font-bold text-[11px] md:text-xs tracking-wider mb-1 block">
+                          {item.category}
+                      </span>
+                      <h3 className="text-white font-bold text-base md:text-lg leading-tight">
+                          {item.title}
+                      </h3>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+          
+          {/* Centered View All button if there are items */}
+          {homeFilteredPortfolio.length > 0 && (
+             <div className="mt-12 flex justify-center w-full">
+                <button 
+                  onClick={() => setCurrentView('portfolio')}
+                  className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-gray-100 hover:text-black hover:border-black transition-colors"
+                >
+                  포트폴리오 전체보기 <ArrowUpRight size={16}/>
+                </button>
+             </div>
+          )}
+        </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-32 px-6 md:px-10 bg-[#f9f9f9] border-t border-gray-100 scroll-mt-24">
+      <section id="about" className="py-20 md:py-32 px-6 md:px-10 bg-[#f9f9f9] border-t border-gray-100 scroll-mt-24">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-12 gap-10 mb-24">
+          <div className="grid md:grid-cols-12 gap-10 mb-16 md:mb-24">
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
               whileInView={{ opacity: 1, y: 0 }} 
@@ -271,7 +402,7 @@ export const MainSite: React.FC = () => {
               </p>
               <button 
                 onClick={() => window.location.href = 'mailto:zerolco@daum.net'}
-                className="border border-gray-300 px-8 py-3 rounded-full text-sm font-bold hover:bg-black hover:text-white transition"
+                className="border border-gray-300 px-8 py-3 rounded-lg text-sm font-bold hover:bg-black hover:text-white transition"
               >
                 Read More
               </button>
@@ -291,8 +422,8 @@ export const MainSite: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 md:gap-24 mb-32">
             <div className="flex flex-col justify-center">
-                <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-                    견적문의 및 상담
+                <h2 className="text-5xl md:text-6xl font-blackhan leading-[1.2] mb-6 tracking-tight">
+                    다음 프로젝트,<br/>제롤과 함께.
                 </h2>
                 <p className="text-gray-400 text-lg mb-12 leading-relaxed">
                     제롤광고산업은 고객에게 맞춘 최적의 디자인 솔루션을 제공합니다.<br/>
@@ -362,8 +493,11 @@ export const MainSite: React.FC = () => {
             <form 
               action="https://formspree.io/f/mjgonpkr" 
               method="POST"
-              className="bg-[#111111] p-8 md:p-10 rounded-3xl border border-white/5 shadow-2xl"
+              className="bg-[#111111] p-8 md:p-10 rounded-3xl border border-white/5 shadow-2xl flex flex-col"
             >
+              <div className="mb-8 border-b border-white/10 pb-4">
+                <h3 className="text-xl font-bold text-white tracking-tight">견적문의 및 상담</h3>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-gray-500 text-sm mb-2 font-medium ml-1" htmlFor="name">이름</label>
@@ -418,7 +552,7 @@ export const MainSite: React.FC = () => {
           
           <div className="border-t border-white/10 pt-16">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
-                <span className="text-4xl md:text-[10rem] font-black leading-none tracking-tighter text-white/10 select-none">ZEROL</span>
+                <span className="text-2xl md:text-[3.3rem] font-black leading-none tracking-tighter text-white/10 select-none">ZEROL</span>
                 <span className="text-xs text-gray-600 uppercase tracking-widest text-right">®2026 ZEROL Advertising Industry.<br/>All rights reserved.</span>
             </div>
           </div>

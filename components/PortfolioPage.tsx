@@ -19,84 +19,88 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ items, onBack }) =
 
   return (
     <div className="min-h-screen relative z-50 bg-[var(--bg-color)] text-[var(--text-color)]">
-      
-      {/* Fixed Header for Portfolio Page */}
-      <div className="sticky top-0 z-40 border-b border-[var(--text-color)]/10 px-6 md:px-10 py-6 flex items-center justify-between bg-[var(--bg-color)]/90 backdrop-blur-md">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={onBack}
-            className="p-2 rounded-full hover:bg-[var(--text-color)]/10 transition-colors group"
-          >
-            <ArrowLeft className="transition-colors text-[var(--text-color)]" />
-          </button>
-          <h2 className="text-xl font-bold tracking-tight">All Projects</h2>
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+           <div>
+              <span className="text-[var(--primary-color)] font-bold text-sm tracking-widest mb-3 block">작업 사례</span>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">제롤광고산업이 만든 결과물</h2>
+           </div>
+           <div className="flex gap-4">
+             <button 
+               onClick={onBack} 
+               className="border border-gray-300 text-gray-600 px-6 py-3 rounded-lg text-sm font-bold hover:bg-gray-50 flex items-center gap-2 transition"
+             >
+                <ArrowLeft size={16} /> 돌아가기
+             </button>
+             <button 
+               onClick={() => { onBack(); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 300); }}
+               className="border border-[var(--primary-color)] text-[var(--primary-color)] px-6 py-3 rounded-lg text-sm font-bold hover:bg-[var(--primary-color)] hover:text-white transition flex items-center gap-2"
+             >
+                전체 문의 <ArrowLeft className="rotate-[135deg]" size={16} />
+             </button>
+           </div>
         </div>
-        <img src="https://i.imgur.com/s39s4ud.png" alt="Logo" className="h-8 w-auto opacity-50" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
         
         {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-3 mb-12">
+        <div className="flex gap-6 border-y border-gray-200 py-4 mb-10 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${
+              className={`text-sm md:text-base font-bold whitespace-nowrap transition-colors relative pb-1 ${
                 filter === cat 
-                  ? 'bg-[var(--primary-color)] text-white border-[var(--primary-color)]' 
-                  : 'bg-transparent text-[var(--text-color)]/70 border-[var(--text-color)]/20 hover:border-[var(--text-color)] hover:text-[var(--text-color)]'
+                  ? 'text-[var(--primary-color)]' 
+                  : 'text-gray-500 hover:text-black'
               }`}
             >
-              {cat}
+              {cat === 'All' ? '전체' : cat}
+              {filter === cat && (
+                <motion.div 
+                  layoutId="activePortfolioTab" 
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--primary-color)]" 
+                />
+              )}
             </button>
           ))}
         </div>
 
-        {/* Gallery Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        {/* Gallery Grid (Standard Image Grid) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
             {filteredItems.map((item, idx) => (
               <motion.div
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
                 key={`${item.title}-${idx}`}
-                className="group cursor-pointer"
+                className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm bg-gray-100 aspect-[16/10]"
                 onClick={() => setSelectedImage(item)}
               >
-                <div className="aspect-[4/3] bg-[var(--text-color)]/5 rounded-2xl overflow-hidden relative mb-4 border border-[var(--text-color)]/5">
-                  <img 
-                    src={item.imageUrl} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
-                        <ZoomIn size={24} />
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
                 
-                <div className="px-1">
-                    <span className="text-xs font-bold uppercase tracking-wider mb-1 block text-[var(--primary-color)]">
+                {/* Gradient Overlay */}
+                <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                
+                {/* Text Overlay */}
+                <div className="absolute bottom-0 left-0 p-5 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 pointer-events-none">
+                    <span className="text-[var(--primary-color)] font-bold text-[11px] md:text-xs tracking-wider mb-1 block">
                         {item.category}
                     </span>
-                    <h3 className="text-lg font-bold group-hover:underline underline-offset-4 decoration-2 decoration-[var(--primary-color)]">
+                    <h3 className="text-white font-bold text-base md:text-lg leading-tight">
                         {item.title}
                     </h3>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         {filteredItems.length === 0 && (
           <div className="py-20 text-center text-[var(--text-color)]/50">

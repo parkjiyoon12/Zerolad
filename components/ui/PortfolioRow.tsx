@@ -64,10 +64,14 @@ export const PortfolioRow: React.FC<PortfolioRowProps> = ({ category, items, onI
     <div className="py-6 border-b border-gray-100 last:border-none">
       {/* Header aligned with max-w-7xl */}
       <div className="px-6 md:px-10 mb-8 flex items-end justify-between max-w-7xl mx-auto">
-        <h3 className="text-lg md:text-xl font-bold flex items-center gap-2 tracking-tight">
-            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-[var(--primary-color)] rounded-full"></span>
-            {category}
-        </h3>
+        <div>
+          {category && (
+            <h3 className="text-lg md:text-xl font-bold flex items-center gap-2 tracking-tight">
+                <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-[var(--primary-color)] rounded-full"></span>
+                {category}
+            </h3>
+          )}
+        </div>
         
         {/* Navigation Buttons */}
         <div className="flex gap-2">
